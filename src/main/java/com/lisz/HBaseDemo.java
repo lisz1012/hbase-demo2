@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+// 对HBase做SQL查询可以用Apache Phoenix
 public class HBaseDemo {
 	private Configuration conf = null;
 	private Connection connection = null;
