@@ -40,6 +40,7 @@ public class HBaseDemo {
 		// 添加列族信息
 		tableDescriptorBuilder.setColumnFamily(columnFamilyDescriptorBuilder.build());
 		if (admin.tableExists(tableName)) {
+			// 跟在命令行中一样，删除表之前先要disable它
 			admin.disableTable(tableName);
 			admin.deleteTable(tableName);
 		}
