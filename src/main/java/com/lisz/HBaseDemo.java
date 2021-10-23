@@ -39,6 +39,10 @@ public class HBaseDemo {
 		ColumnFamilyDescriptorBuilder columnFamilyDescriptorBuilder = ColumnFamilyDescriptorBuilder.newBuilder("cf".getBytes());
 		// 添加列族信息
 		tableDescriptorBuilder.setColumnFamily(columnFamilyDescriptorBuilder.build());
+		if (admin.tableExists(tableName)) {
+			admin.disableTable(tableName);
+			admin.deleteTable(tableName);
+		}
 		// 创建表
 		admin.createTable(tableDescriptorBuilder.build());
 	}
