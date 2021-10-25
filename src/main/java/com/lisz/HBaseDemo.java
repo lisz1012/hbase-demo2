@@ -144,6 +144,7 @@ public class HBaseDemo {
 	@Test
 	public void scanByCondition() throws Exception {
 		Scan scan = new Scan();
+		// 这里容易出错，由于要按照时间的倒序存的，所以取的时候也要反过来规定范围
 		String startRow = "15895088716_" + (Long.MAX_VALUE - sdf.parse("20210331235959").getTime());
 		String stopRow = "15895088716_" + (Long.MAX_VALUE - sdf.parse("20210301000000").getTime());
 		scan.withStartRow(Bytes.toBytes(startRow));
