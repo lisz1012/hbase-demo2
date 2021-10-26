@@ -1,11 +1,11 @@
 package com.lisz;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hbase.Cell;
-import org.apache.hadoop.hbase.CellUtil;
-import org.apache.hadoop.hbase.HBaseConfiguration;
-import org.apache.hadoop.hbase.TableName;
+import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.hbase.filter.FilterList;
+import org.apache.hadoop.hbase.filter.PrefixFilter;
+import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.After;
 import org.junit.Before;
@@ -154,7 +154,39 @@ public class HBaseDemo {
 			Cell cell = res.getColumnLatestCell(Bytes.toBytes("cf"), Bytes.toBytes("dnum"));
 			System.out.print(Bytes.toString(CellUtil.cloneValue(cell)) + "--");
 			cell = res.getColumnLatestCell(Bytes.toBytes("cf"), Bytes.toBytes("length"));
-			System.out.println(Bytes.toString(CellUtil.cloneValue(cell)) + "--");
+			System.out.print(Bytes.toString(CellUtil.cloneValue(cell)) + "--");
+			cell = res.getColumnLatestCell(Bytes.toBytes("cf"), Bytes.toBytes("date"));
+			System.out.print(Bytes.toString(CellUtil.cloneValue(cell)) + "--");
+			cell = res.getColumnLatestCell(Bytes.toBytes("cf"), Bytes.toBytes("type"));
+			System.out.print(Bytes.toString(CellUtil.cloneValue(cell)));
+			System.out.println();
+		}
+	}
+
+	/**
+	 * 查询某个用户所有的主叫记录（type=1）
+	 * 1。某个用户
+	 * 2。type=1
+	 */
+	@Test
+	public void getByType() throws Exception {
+		Scan scan = new Scan();
+		// 创建过滤器的集合
+		FilterList filters = new FilterList(FilterList.Operator.MUST_PASS_ALL);
+		// 创建过滤器
+		SingleColumnValueFilter filter1 = new SingleColumnValueFilter(Bytes.toBytes("cf"), Bytes.toBytes("type"),
+				CompareOperator.EQUAL, Bytes.toBytes("1"));
+		filters.addFilter(filter1);
+		// 前缀过滤器
+		PrefixFilter filter2 = new PrefixFilter(Bytes.toBytes("15895088716"));
+		filters.addFilter(filter2);
+		scan.setFilter(filters);
+		final ResultScanner scanner = table.getScanner(scan);
+		for (Result res : scanner) {
+			Cell cell = res.getColumnLatestCell(Bytes.toBytes("cf"), Bytes.toBytes("dnum"));
+			System.out.print(Bytes.toString(CellUtil.cloneValue(cell)) + "--");
+			cell = res.getColumnLatestCell(Bytes.toBytes("cf"), Bytes.toBytes("length"));
+			System.out.print(Bytes.toString(CellUtil.cloneValue(cell)) + "--");
 			cell = res.getColumnLatestCell(Bytes.toBytes("cf"), Bytes.toBytes("date"));
 			System.out.print(Bytes.toString(CellUtil.cloneValue(cell)) + "--");
 			cell = res.getColumnLatestCell(Bytes.toBytes("cf"), Bytes.toBytes("type"));
