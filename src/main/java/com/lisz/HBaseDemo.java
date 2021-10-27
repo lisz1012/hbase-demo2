@@ -195,6 +195,12 @@ public class HBaseDemo {
 		}
 	}
 
+	@Test
+	public void delete() throws Exception {
+		Delete delete = new Delete(Bytes.toBytes("111"));
+		table.delete(delete);
+	}
+
 	@After
 	public void destroy() {
 		try {
