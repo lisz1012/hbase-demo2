@@ -167,6 +167,7 @@ public class HBaseDemo {
 	 * 查询某个用户所有的主叫记录（type=1）
 	 * 1。某个用户
 	 * 2。type=1
+	 * 注意⚠️：如果用了ProtoBuf，可以大幅度减少HBase记录的空间占用，但是就无法使用各种filter进行条件查询了
 	 */
 	@Test
 	public void getByType() throws Exception {
