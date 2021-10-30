@@ -172,6 +172,7 @@ public class HBaseDemo {
 	@Test
 	public void getByType() throws Exception {
 		Scan scan = new Scan();
+		//scan.setCaching(500); // 一个大scan可能发多个请求。过多的RPC请求可能很贵，此时考虑将缓存增大至500-1000，延迟可降低25%
 		// 创建过滤器的集合
 		FilterList filters = new FilterList(FilterList.Operator.MUST_PASS_ALL);
 		// 创建过滤器
@@ -194,6 +195,7 @@ public class HBaseDemo {
 			System.out.print(Bytes.toString(CellUtil.cloneValue(cell)));
 			System.out.println();
 		}
+		scanner.close();
 	}
 
 	@Test
